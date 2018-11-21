@@ -9,18 +9,24 @@
     <link href="css/base.css" rel="stylesheet">
     <link href="css/checkout.css" rel="stylesheet">
     <link href="css/modal.css" rel="stylesheet">
-    <style type="text/css">
-        .quentity input {
+    <style >
+        .quantity input {
             width: 40px;
             padding: 5px 10px;
             text-align: center;
+        }
+        .quantity a{
+        	font-size: 26px;
+        }
+        [v-cloak] { 
+        	display: none;
         }
     </style>
 </head>
 <body>
     <div class="checkout">
       <div id="app">
-        <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+        <!-- <svg style="position: absolute; width: 0; height: 0; overflow: hidden;" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
           <defs>
             <symbol id="icon-add" viewBox="0 0 32 32">
               <title>add2</title>
@@ -43,7 +49,7 @@
               <path class="path1" d="M29.333 16c0-7.364-5.97-13.333-13.333-13.333s-13.333 5.97-13.333 13.333c0 7.364 5.97 13.333 13.333 13.333s13.333-5.97 13.333-13.333v0 0 0 0 0 0zM0 16c0-8.837 7.163-16 16-16s16 7.163 16 16c0 8.837-7.163 16-16 16s-16-7.163-16-16zM14.667 14.667v1.333h2.667v-10.667h-2.667v9.333zM24 18.667h1.333v-2.667h-10.667v2.667h9.333z"></path>
             </symbol>
           </defs>
-        </svg>
+        </svg> -->
         <div class="container">
           <div class="cart">
             <div class="checkout-title">
@@ -63,43 +69,43 @@
                   </ul>
                 </div>
                 <ul class="cart-item-list">
-                  <li>
+                  <li v-for="(item, index) in dataList"> 
                     <div class="cart-tab-1">
                       <div class="cart-item-check">
-                        <a href="javascript:void 0" class="item-check-btn">
+                        <a href="javascript:void 0" class="item-check-btn"  :class="{'check': item.checked}" @click="selected(item)">
                           <svg class="icon icon-ok"><use xlink:href="#icon-ok"></use></svg>
                         </a>
                       </div>
                       <div class="cart-item-pic">
-                        <img src="img/goods-1.jpg" alt="烟">
+                        <img :src="item.productImage" :alt="item.productName">
                       </div>
                       <div class="cart-item-title">
-                        <div class="item-name">黄鹤楼香烟</div>
+                        <div class="item-name">{{item.productName}}</div>
                       </div>
                       <div class="item-include">
                         <dl>
                           <dt>赠送:</dt>
-                          <dd>打火机</dd>
+                          <dd v-for="(partsItem, index) in item.parts" :key="partsItem.partsId" :id="partsItem.partsId">{{partsItem.partsName}}</dd>
                         </dl>
                       </div>
                     </div>
                     <div class="cart-tab-2">
-                      <div class="item-price"></div>
+                      <div class="item-price">{{item.productPrice}}</div>
                     </div>
                     <div class="cart-tab-3">
                       <div class="item-quantity">
                         <div class="select-self select-self-open">
                           <div class="quantity">
-                            <a href="javascript:void 0"></a>
-                            <input type="text" value="0" disabled>
-                            <a href="javascript:void 0"></a>
+                            <a href="javascript:void 0" @click="updateNumber(item, 1)">+</a>
+                            <input type="text" :value="item.productQuantity" disabled>
+                            <a href="javascript:void 0" @click="updateNumber(item, -1)">-</a>
                           </div>
                         </div>
                         <div class="item-stock">有货</div>
                       </div>
                     </div>
                     <div class="cart-tab-4">
-                      <div class="item-price-total">0.00</div>
+                      <div class="item-price-total">{{item.productPrice * item.productQuantity}}</div>
                     </div>
                     <div class="cart-tab-5">
                       <div class="cart-item-operation">
@@ -132,7 +138,7 @@
               </div>
               <div class="cart-foot-r">
                 <div class="item-total">
-                  Item total: <span class="total-price"></span>
+                  总价: <span class="total-price">{{totalMoney}}</span>
                 </div>
                 <div class="next-btn-wrap">
                   <a href="javascrit:;" class="btn btn--red" style="width: 200px">结账</a>
@@ -160,8 +166,8 @@
         </div>
       </div>
     </div>
-
     <script src="js/lib/vue.min.js"></script>
     <script src="js/lib/vue-resource.js"></script>
+    <script src='./js/main.js'></script>
 </body>
 </html>
