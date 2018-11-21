@@ -2,7 +2,8 @@ var app = new Vue({
   el: '#app',
   data: {
     dataList: [],
-    totalMoney: 0
+    totalMoney: 0,
+    allChecked: false
   },
   mounted: function(){
     this.cartView();
@@ -12,7 +13,6 @@ var app = new Vue({
       this.$http.get('./data/cartData.json').then(function(res){
         console.log( res );
         this.dataList = res.data.result.list;
-        this.totalMoney = res.data.result.totalMoney;
       })
     },
     updateNumber: function(product, type){
@@ -27,7 +27,10 @@ var app = new Vue({
       let totalMoney = 0;
       var dataList = this.dataList;
       for(var i in dataList){
-        totalMoney += dataList[i].productPrice * dataList[i].productQuantity;
+        if( dataList[i].checked ){
+          totalMoney += dataList[i].productPrice * dataList[i].productQuantity;
+        }
+        
       }
       this.totalMoney = totalMoney;
     },
@@ -37,6 +40,22 @@ var app = new Vue({
       }else {
         product.checked = !product.checked;
       }
+      this.updateTotalMoney();
+    },
+    allSelected: function(){
+       this.allChecked = !this.allChecked;
+       this.dataList.forEach( (value, index) => {
+        if(typeof value.checked === 'undefined'){
+          this.$set(value, 'checked', true);
+        }else {
+          value.checked = this.allChecked;
+        }
+       });
+       this.updateTotalMoney();
+    },
+    del: function(product){
+      var index = this.dataList.indexOf( product );
+      this.dataList.splice(index, 1);
       this.updateTotalMoney();
     }
 

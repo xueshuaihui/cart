@@ -109,9 +109,7 @@
                     </div>
                     <div class="cart-tab-5">
                       <div class="cart-item-operation">
-                        <a href="javascript:void 0" class="item-edit-btn">
-                          <svg class="icon icon-del"><use xlink:href="#icon-del" ></use></svg>
-                        </a>
+                        <a href="javascript:void 0" class="item-edit-btn" @click="del(item)">删除</a>
                       </div>
                     </div>
                   </li>
@@ -124,7 +122,7 @@
               <div class="cart-foot-l">
                 <div class="item-all-check">
                   <a href="javascript:void 0">
-                    <span class="item-check-btn" >
+                    <span class="item-check-btn" :class="{check: allChecked}" @click="allSelected">
                       <svg class="icon icon-ok"><use xlink:href="#icon-ok"></use></svg>
                     </span>
                     <span>全选</span>
