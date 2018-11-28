@@ -11,7 +11,6 @@ var app = new Vue({
   methods: {
     cartView: function(){
       this.$http.get('./data/cartData.json').then(function(res){
-        console.log( res );
         this.dataList = res.data.result.list;
       })
     },
@@ -59,6 +58,11 @@ var app = new Vue({
       this.updateTotalMoney();
     }
 
+  },
+  filters: {
+    moneyFilter: function(value){
+      return value.toFixed(2);
+    }
   }
   
 })
